@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Mở Túi Mù - Bạn Thuộc Đội Nào?</title>
+    <!-- Thêm Font Awesome từ CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        #result.show {
+            opacity: 1;
+        }
+        #teamLists {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+        }
+        .team {
+            min-width: 200px;
+        }
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 120px; /* Tăng margin-top để tránh overlap với hình ảnh cầu thủ */
+            margin-bottom: 20px;
+        }
+        /* Khung viền hình quả bóng */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            background-image: url('https://www.transparenttextures.com/patterns/soccer-ball.png');
+            background-repeat: repeat;
+            border: 5px solid #000;
+            border-radius: 15px;
+            position: relative;
+            padding-bottom: 30px;
+        }
+        /* Hình Ronaldo và Messi */
+        .player-images {
+            display: flex;
+            justify-content: space-between;
+            position: absolute;
+            width: calc(100% - 40px); /* Điều chỉnh chiều rộng để phù hợp với container padding */
+            top: 10px;
+            left: 20px;
+        }
+        .player-images img {
+            width: 100px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #333;
+        }
+        /* Nút hộp quà */
+        #giftButton {
+            background-color: #f44336; /* Màu đỏ mặc định nếu ảnh không tải được */
+            border: 3px solid #gold;
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+            margin: 20px auto;
+            display: block;
+            font-size: 0; /* Ẩn văn bản nếu có */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        #giftButton::before {
+            content: "🎁"; /* Emoji quà tặng */
+            font-size: 70px;
+            line-height: 120px;
+            display: block;
+        }
+        #giftButton:hover {
+            transform: scale(1.05);
+        }
+        #giftButton.open {
+            transform: rotateY(180deg);
+        }
+        /* Hiệu ứng pháo hoa */
+        .fireworks {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 100;
+            width: 100%;
+            height: 100%;
+        }
+        .fireworks.show {
+            opacity: 1;
+        }
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #fff;
+            border-radius: 50%;
+            animation: explode 1s ease-out;
+        }
+        @keyframes explode {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(20); opacity: 0; }
+        }
+        /* Tăng số lượng pháo hoa */
+        .fireworks .firework:nth-child(1) {
+            background: #ff0; /* Vàng */
+            top: -50px;
+            left: -50px;
+            animation-delay: 0s;
+        }
+        .fireworks .firework:nth-child(2) {
+            background: #f00; /* Đỏ */
+            top: 50px;
+            left: 50px;
+            animation-delay: 0.2s;
+        }
+        .fireworks .firework:nth-child(3) {
+            background: #0f0; /* Xanh lá */
+            top: -50px;
+            left: 50px;
+            animation-delay: 0.4s;
+        }
+        .fireworks .firework:nth-child(4) {
+            background: #00f; /* Xanh dương */
+            top: 50px;
+            left: -50px;
+            animation-delay: 0.6s;
+        }
+        .fireworks .firework:nth-child(5) {
+            background: #f0f; /* Tím */
+            top: 0;
+            left: 0;
+            animation-delay: 0.8s;
+        }
+        #name {
+            padding: 10px;
+            width: 250px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+        li {
+            padding: 5px 0;
+            border-bottom: 1px dashed #ccc;
+        }
+        .team {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="player-images">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="Ronaldo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="Messi">
+        </div>
+        <div class="header">
+            <h1>Mở Túi Mù - Bạn Thuộc Đội Nào?</h1>
+        </div>
+        <input type="text" id="name" placeholder="Nhập tên của bạn">
+        <button id="giftButton" onclick="openGift()"></button>
+        <div id="result"></div>
+        <div id="teamLists">
+            <div class="team">
+                <h3 style="color: green">Đội Xanh</h3>
+                <ul id="greenTeam"></ul>
+            </div>
+            <div class="team">
+                <h3 style="color: red">Đội Đỏ</h3>
+                <ul id="redTeam"></ul>
+            </div>
+        </div>
+        <div class="fireworks" id="fireworks">
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+            <div class="firework"></div>
+        </div>
+    </div>
+
+    <script>
+        // Khởi tạo mảng đội
+        let greenTeam = [];
+        let redTeam = [];
+        const MAX_PLAYERS_PER_TEAM = 12;
+
+        // Load dữ liệu từ localStorage
+        function loadTeams() {
+            try {
+                const storedGreenTeam = localStorage.getItem('greenTeam');
+                const storedRedTeam = localStorage.getItem('redTeam');
+                
+                if (storedGreenTeam) {
+                    greenTeam = JSON.parse(storedGreenTeam);
+                }
+                
+                if (storedRedTeam) {
+                    redTeam = JSON.parse(storedRedTeam);
+                }
+                
+                updateTeamList('greenTeam', greenTeam);
+                updateTeamList('redTeam', redTeam);
+            } catch (error) {
+                console.error("Lỗi khi tải dữ liệu đội:", error);
+                // Nếu có lỗi, reset dữ liệu
+                greenTeam = [];
+                redTeam = [];
+                localStorage.removeItem('greenTeam');
+                localStorage.removeItem('redTeam');
+            }
+        }
+
+        // Kiểm tra URL parameters và tự động phân đội
+        function checkUrlAndAssign() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const nameFromUrl = urlParams.get('name');
+                if (nameFromUrl) {
+                    document.getElementById("name").value = decodeURIComponent(nameFromUrl);
+                    setTimeout(openGift, 500); // Thêm độ trễ để đảm bảo trang đã tải hoàn tất
+                }
+            } catch (error) {
+                console.error("Lỗi khi kiểm tra URL:", error);
+            }
+        }
+
+        // Cập nhật danh sách đội trên giao diện
+        function updateTeamList(teamId, teamArray) {
+            const list = document.getElementById(teamId);
+            if (list) {
+                list.innerHTML = '';
+                teamArray.forEach(member => {
+                    const li = document.createElement('li');
+                    li.textContent = member;
+                    list.appendChild(li);
+                });
+            }
+        }
+
+        // Hàm mở hộp quà và phân đội
+        function openGift() {
+            const nameInput = document.getElementById("name");
+            const name = nameInput.value.trim();
+            if (!name) {
+                alert("Vui lòng nhập tên!");
+                return;
+            }
+
+            if (greenTeam.includes(name) || redTeam.includes(name)) {
+                alert("Tên này đã được sử dụng!");
+                return;
+            }
+
+            if (greenTeam.length >= MAX_PLAYERS_PER_TEAM && redTeam.length >= MAX_PLAYERS_PER_TEAM) {
+                alert("Cả hai đội đã đủ 12 người!");
+                return;
+            }
+
+            let assignedTeam;
+            const availableTeams = [];
+            if (greenTeam.length < MAX_PLAYERS_PER_TEAM) availableTeams.push("Đội Xanh");
+            if (redTeam.length < MAX_PLAYERS_PER_TEAM) availableTeams.push("Đội Đỏ");
+
+            if (availableTeams.length === 0) {
+                alert("Không còn chỗ trong đội nào!");
+                return;
+            }
+
+            assignedTeam = availableTeams[Math.floor(Math.random() * availableTeams.length)];
+
+            // Thêm hiệu ứng
+            const giftButton = document.getElementById("giftButton");
+            const result = document.getElementById("result");
+            const fireworks = document.getElementById("fireworks");
+
+            // Thêm lớp open để tạo hiệu ứng bung nắp
+            giftButton.classList.add("open");
+            setTimeout(() => {
+                // Hiển thị pháo hoa
+                fireworks.classList.add("show");
+                result.style.color = assignedTeam === "Đội Xanh" ? "green" : "red";
+                result.innerHTML = `${name}, bạn thuộc <strong>${assignedTeam}</strong>!`;
+                result.classList.add("show");
+
+                // Lưu vào đội
+                if (assignedTeam === "Đội Xanh") {
+                    greenTeam.push(name);
+                } else {
+                    redTeam.push(name);
+                }
+                updateTeamList('greenTeam', greenTeam);
+                updateTeamList('redTeam', redTeam);
+
+                try {
+                    // Lưu vào localStorage
+                    localStorage.setItem('greenTeam', JSON.stringify(greenTeam));
+                    localStorage.setItem('redTeam', JSON.stringify(redTeam));
+                } catch (error) {
+                    console.error("Lỗi khi lưu dữ liệu:", error);
+                    alert("Có lỗi khi lưu dữ liệu! Vui lòng thử lại sau.");
+                }
+
+                // Reset sau 2 giây
+                setTimeout(() => {
+                    giftButton.classList.remove("open");
+                    fireworks.classList.remove("show");
+                    result.classList.remove("show");
+                    nameInput.value = "";
+                    // Xóa param từ URL
+                    if (window.history && window.history.pushState) {
+                        window.history.pushState({}, document.title, window.location.pathname);
+                    }
+                }, 2000);
+            }, 500);
+        }
+
+        // Thêm chức năng reset
+        function resetTeams() {
+            if (confirm("Bạn có chắc muốn xóa hết người chơi trong cả hai đội?")) {
+                greenTeam = [];
+                redTeam = [];
+                localStorage.removeItem('greenTeam');
+                localStorage.removeItem('redTeam');
+                updateTeamList('greenTeam', greenTeam);
+                updateTeamList('redTeam', redTeam);
+                alert("Đã xóa tất cả người chơi!");
+            }
+        }
+
+        // Thêm phím tắt để reset (Ctrl+Shift+R)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                resetTeams();
+                e.preventDefault();
+            }
+        });
+
+        // Chạy khi trang tải
+        window.onload = function() {
+            loadTeams();
+            checkUrlAndAssign();
+        };
+    </script>
+</body>
+</html>
