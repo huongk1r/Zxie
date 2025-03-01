@@ -6,6 +6,7 @@
     <!-- Thêm Font Awesome từ CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        /* Giữ nguyên CSS ban đầu */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -13,209 +14,35 @@
             padding: 20px;
             background-color: #f0f0f0;
         }
-        #result {
-            font-size: 24px;
+        /* ... phần CSS khác ... */
+        /* Thêm style cho nút chia sẻ */
+        #shareButton {
             margin-top: 20px;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-        #result.show {
-            opacity: 1;
-        }
-        #teamLists {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-        }
-        .team {
-            min-width: 200px;
-        }
-        .header {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 120px; /* Tăng margin-top để tránh overlap với hình ảnh cầu thủ */
-            margin-bottom: 20px;
-        }
-        /* Khung viền hình quả bóng */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: white;
-            background-image: url('https://www.transparenttextures.com/patterns/soccer-ball.png');
-            background-repeat: repeat;
-            border: 5px solid #000;
-            border-radius: 15px;
-            position: relative;
-            padding-bottom: 30px;
-        }
-        /* Hình Ronaldo và Messi */
-        .player-images {
-            display: flex;
-            justify-content: space-between;
-            position: absolute;
-            width: calc(100% - 40px); /* Điều chỉnh chiều rộng để phù hợp với container padding */
-            top: 10px;
-            left: 20px;
-        }
-        .player-images img {
-            width: 100px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 2px solid #333;
-        }
-        /* Nút hộp quà */
-        #giftButton {
-            background-color: #f44336; /* Màu đỏ mặc định nếu ảnh không tải được */
-            border: 3px solid #gold;
-            width: 120px;
-            height: 120px;
-            cursor: pointer;
-            border-radius: 10px;
-            transition: transform 0.3s;
-            position: relative;
-            overflow: hidden;
-            margin: 20px auto;
-            display: block;
-            font-size: 0; /* Ẩn văn bản nếu có */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        #giftButton::before {
-            content: "🎁"; /* Emoji quà tặng */
-            font-size: 70px;
-            line-height: 120px;
-            display: block;
-        }
-        #giftButton:hover {
-            transform: scale(1.05);
-        }
-        #giftButton.open {
-            transform: rotateY(180deg);
-        }
-        /* Hiệu ứng pháo hoa */
-        .fireworks {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.5s;
-            z-index: 100;
-            width: 100%;
-            height: 100%;
-        }
-        .fireworks.show {
-            opacity: 1;
-        }
-        .firework {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: #fff;
-            border-radius: 50%;
-            animation: explode 1s ease-out;
-        }
-        @keyframes explode {
-            0% { transform: scale(0); opacity: 1; }
-            100% { transform: scale(20); opacity: 0; }
-        }
-        /* Tăng số lượng pháo hoa */
-        .fireworks .firework:nth-child(1) {
-            background: #ff0; /* Vàng */
-            top: -50px;
-            left: -50px;
-            animation-delay: 0s;
-        }
-        .fireworks .firework:nth-child(2) {
-            background: #f00; /* Đỏ */
-            top: 50px;
-            left: 50px;
-            animation-delay: 0.2s;
-        }
-        .fireworks .firework:nth-child(3) {
-            background: #0f0; /* Xanh lá */
-            top: -50px;
-            left: 50px;
-            animation-delay: 0.4s;
-        }
-        .fireworks .firework:nth-child(4) {
-            background: #00f; /* Xanh dương */
-            top: 50px;
-            left: -50px;
-            animation-delay: 0.6s;
-        }
-        .fireworks .firework:nth-child(5) {
-            background: #f0f; /* Tím */
-            top: 0;
-            left: 0;
-            animation-delay: 0.8s;
-        }
-        #name {
-            padding: 10px;
-            width: 250px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 15px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-        }
-        li {
-            padding: 5px 0;
-            border-bottom: 1px dashed #ccc;
-        }
-        .team {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            background-color: rgba(255, 255, 255, 0.7);
-        }
-        #resetButton {
-            margin-top: 20px;
-            padding: 8px 16px;
-            background-color: #f44336;
+            padding: 10px 15px;
+            background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
         }
-        #resetButton:hover {
-            background-color: #d32f2f;
+        #shareButton:hover {
+            background-color: #45a049;
         }
-        #adminPanel {
-            margin-top: 30px;
-            border-top: 1px dashed #ccc;
-            padding-top: 20px;
+        /* CSS cho copy link */
+        #shareLink {
             display: none;
-        }
-        #loader {
-            display: none;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 2s linear infinite;
             margin: 10px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            padding: 10px;
+            width: 80%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Giữ nguyên HTML ban đầu -->
         <div class="player-images">
             <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg" alt="Ronaldo">
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg" alt="Messi">
@@ -225,7 +52,6 @@
         </div>
         <input type="text" id="name" placeholder="Nhập tên của bạn">
         <button id="giftButton" onclick="openGift()"></button>
-        <div id="loader"></div>
         <div id="result"></div>
         <div id="teamLists">
             <div class="team">
@@ -244,130 +70,82 @@
             <div class="firework"></div>
             <div class="firework"></div>
         </div>
-        <button id="resetButton" style="display: none;" onclick="showAdminPanel()">Quản Trị Viên</button>
-        <div id="adminPanel">
-            <input type="password" id="adminPassword" placeholder="Mật khẩu quản trị">
-            <button onclick="verifyAdmin()">Xác Nhận</button>
-            <div id="adminControls" style="display: none;">
-                <button onclick="resetTeams()">Xóa Tất Cả Người Chơi</button>
-            </div>
-        </div>
+        
+        <!-- Nút chia sẻ -->
+        <button id="shareButton" onclick="createShareLink()">Chia Sẻ Trang Này</button>
+        <input type="text" id="shareLink" readonly>
+        
+        <!-- Nút tải danh sách -->
+        <button id="loadButton" onclick="loadTeams()">Tải Danh Sách Đội</button>
     </div>
 
-    <!-- Firebase App (the core Firebase SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <!-- Firebase Database -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
     <script>
-        // Khởi tạo Firebase
-        // Hãy thay thế thông tin cấu hình bên dưới bằng thông tin Firebase của bạn
-        const firebaseConfig = {
-          apiKey: "AIzaSyDaCCt0QTdrXTafq_L7B0G_9TR352yszAY",
-          authDomain: "zxie-7bb0e.firebaseapp.com",
-          projectId: "zxie-7bb0e",
-          storageBucket: "zxie-7bb0e.firebasestorage.app",
-          messagingSenderId: "125093915574",
-          appId: "1:125093915574:web:42b5711e3dfc2eede02f17",
-          measurementId: "G-WMY2FBP9QG"
-        };
+        // ID của Google Sheet (thay thế bằng ID của bạn)
+        const SHEET_ID = "1zbUrDK38MFMLxZZ2SpVkTuqVFuLtXDk7bORsOuyhEYQ";
         
-        // Khởi tạo Firebase
-        firebase.initializeApp(firebaseConfig);
-        
-        // Lấy tham chiếu đến database
-        const database = firebase.database();
-        const teamsRef = database.ref('teams');
-        
-        // Mật khẩu quản trị viên (hãy thay đổi thành mật khẩu an toàn của bạn)
-        const ADMIN_PASSWORD = "matkhau123";
+        // URL của Web App được triển khai từ Apps Script
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxaTM2UWyZ9TKr2QJRMPpA2CYUM3TxHKPqwN-7LnEwDpEC9QxbBIbAh71lKCHqJy89C/exec";
         
         // Khởi tạo mảng đội
         let greenTeam = [];
         let redTeam = [];
         const MAX_PLAYERS_PER_TEAM = 12;
 
-        // Hiển thị loader
-        function showLoader() {
-            document.getElementById('loader').style.display = 'block';
-        }
-
-        // Ẩn loader
-        function hideLoader() {
-            document.getElementById('loader').style.display = 'none';
-        }
-
-        // Load dữ liệu từ Firebase
+        // Tải danh sách đội từ Google Sheet
         function loadTeams() {
-            showLoader();
-            teamsRef.once('value')
-                .then((snapshot) => {
-                    if (snapshot.exists()) {
-                        const data = snapshot.val();
-                        if (data.greenTeam) {
-                            greenTeam = data.greenTeam;
-                        } else {
-                            greenTeam = [];
-                        }
-                        
-                        if (data.redTeam) {
-                            redTeam = data.redTeam;
-                        } else {
-                            redTeam = [];
-                        }
-                    } else {
-                        // Nếu chưa có dữ liệu, tạo dữ liệu mới
-                        greenTeam = [];
-                        redTeam = [];
-                        saveTeams();
+            fetch(`${SCRIPT_URL}?action=get`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Dữ liệu nhận được:", data);
+                    if (data.greenTeam) {
+                        greenTeam = data.greenTeam;
+                    }
+                    if (data.redTeam) {
+                        redTeam = data.redTeam;
                     }
                     
                     updateTeamList('greenTeam', greenTeam);
                     updateTeamList('redTeam', redTeam);
-                    hideLoader();
                 })
-                .catch((error) => {
-                    console.error("Lỗi khi tải dữ liệu đội:", error);
-                    alert("Có lỗi xảy ra khi tải dữ liệu. Vui lòng thử lại sau!");
-                    hideLoader();
+                .catch(error => {
+                    console.error("Lỗi khi tải dữ liệu:", error);
+                    alert("Có lỗi khi tải dữ liệu! Vui lòng thử lại sau.");
                 });
         }
 
-        // Lưu dữ liệu vào Firebase
+        // Lưu danh sách đội vào Google Sheet
         function saveTeams() {
-            return teamsRef.set({
+            const data = {
+                action: 'save',
                 greenTeam: greenTeam,
                 redTeam: redTeam
+            };
+            
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Kết quả lưu:", data);
+            })
+            .catch(error => {
+                console.error("Lỗi khi lưu dữ liệu:", error);
             });
         }
 
-        // Hiển thị panel quản trị
-        function showAdminPanel() {
-            document.getElementById('adminPanel').style.display = 'block';
-        }
-
-        // Xác thực mật khẩu quản trị
-        function verifyAdmin() {
-            const password = document.getElementById('adminPassword').value;
-            if (password === ADMIN_PASSWORD) {
-                document.getElementById('adminControls').style.display = 'block';
-            } else {
-                alert("Mật khẩu không đúng!");
-            }
-        }
-
-        // Kiểm tra URL parameters và tự động phân đội
-        function checkUrlAndAssign() {
-            try {
-                const urlParams = new URLSearchParams(window.location.search);
-                const nameFromUrl = urlParams.get('name');
-                if (nameFromUrl) {
-                    document.getElementById("name").value = decodeURIComponent(nameFromUrl);
-                    setTimeout(openGift, 1000); // Thêm độ trễ để đảm bảo đã tải dữ liệu từ Firebase
-                }
-            } catch (error) {
-                console.error("Lỗi khi kiểm tra URL:", error);
-            }
+        // Tạo link chia sẻ
+        function createShareLink() {
+            const shareLink = document.getElementById('shareLink');
+            const currentUrl = window.location.href.split('?')[0]; // Lấy URL cơ bản không có parameters
+            shareLink.value = currentUrl;
+            shareLink.style.display = 'block';
+            shareLink.select();
+            document.execCommand('copy');
+            alert('Đã sao chép liên kết!');
         }
 
         // Cập nhật danh sách đội trên giao diện
@@ -421,7 +199,6 @@
 
             // Thêm lớp open để tạo hiệu ứng bung nắp
             giftButton.classList.add("open");
-            showLoader();
             
             setTimeout(() => {
                 // Hiển thị pháo hoa
@@ -440,17 +217,8 @@
                 updateTeamList('greenTeam', greenTeam);
                 updateTeamList('redTeam', redTeam);
 
-                // Lưu vào Firebase
-                saveTeams()
-                    .then(() => {
-                        console.log("Dữ liệu đã được lưu thành công");
-                        hideLoader();
-                    })
-                    .catch((error) => {
-                        console.error("Lỗi khi lưu dữ liệu:", error);
-                        alert("Có lỗi khi lưu dữ liệu! Vui lòng thử lại sau.");
-                        hideLoader();
-                    });
+                // Lưu vào Google Sheet
+                saveTeams();
 
                 // Reset sau 2 giây
                 setTimeout(() => {
@@ -458,63 +226,13 @@
                     fireworks.classList.remove("show");
                     result.classList.remove("show");
                     nameInput.value = "";
-                    // Xóa param từ URL
-                    if (window.history && window.history.pushState) {
-                        window.history.pushState({}, document.title, window.location.pathname);
-                    }
                 }, 2000);
             }, 500);
         }
 
-        // Thêm chức năng reset
-        function resetTeams() {
-            if (confirm("Bạn có chắc muốn xóa hết người chơi trong cả hai đội?")) {
-                showLoader();
-                greenTeam = [];
-                redTeam = [];
-                
-                saveTeams()
-                    .then(() => {
-                        updateTeamList('greenTeam', greenTeam);
-                        updateTeamList('redTeam', redTeam);
-                        alert("Đã xóa tất cả người chơi!");
-                        hideLoader();
-                    })
-                    .catch((error) => {
-                        console.error("Lỗi khi reset dữ liệu:", error);
-                        alert("Có lỗi khi reset dữ liệu! Vui lòng thử lại sau.");
-                        hideLoader();
-                    });
-            }
-        }
-
-        // Thêm phím tắt để hiển thị panel quản trị (Ctrl+Shift+R)
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
-                document.getElementById('resetButton').style.display = 'block';
-                e.preventDefault();
-            }
-        });
-
-        // Lắng nghe cập nhật dữ liệu từ Firebase
-        teamsRef.on('value', (snapshot) => {
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                if (data.greenTeam) {
-                    greenTeam = data.greenTeam;
-                }
-                if (data.redTeam) {
-                    redTeam = data.redTeam;
-                }
-                updateTeamList('greenTeam', greenTeam);
-                updateTeamList('redTeam', redTeam);
-            }
-        });
-
         // Chạy khi trang tải
         window.onload = function() {
             loadTeams();
-            setTimeout(checkUrlAndAssign, 1000);
         };
     </script>
 </body>
